@@ -8,16 +8,15 @@ import argparse
 from utils import build_dataset, build_iterator, get_time_dif
 
 parser = argparse.ArgumentParser(description='Chinese Text Classification')
-parser.add_argument('--model', type=str, required=True, help='choose a model: Bert, ERNIE')
-args = parser.parse_args()
+parser.add_argument('--model', type=str, required=True,default="bert", help='choose a model: Bert, ERNIE')
 
-
-if __name__ == '__main__':
+def run(model):
     dataset = 'THUCNews'  # 数据集
 
-    model_name = args.model  # bert
+    model_name = model   # bert
     x = import_module('models.' + model_name)
     config = x.Config(dataset)
+
     np.random.seed(1)
     torch.manual_seed(1)
     torch.cuda.manual_seed_all(1)
@@ -25,6 +24,7 @@ if __name__ == '__main__':
 
     start_time = time.time()
     print("Loading data...")
+    
     train_data, dev_data, test_data = build_dataset(config)
     train_iter = build_iterator(train_data, config)
     dev_iter = build_iterator(dev_data, config)
@@ -35,3 +35,9 @@ if __name__ == '__main__':
     # train
     model = x.Model(config).to(config.device)
     train(config, model, train_iter, dev_iter, test_iter)
+
+run("bert")
+
+if __name__ == '__main__':
+    args = parser.parse_args()
+    run(args.model)

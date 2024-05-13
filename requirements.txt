@@ -1,0 +1,7 @@
+torch
+tqdm
+scikit-learn
+tensorboardX
+boto3
+requests
+regex
