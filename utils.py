@@ -20,6 +20,7 @@ def build_dataset(config):
                 token = config.tokenizer.tokenize(content)
                 token = [CLS] + token
                 seq_len = len(token)
+                # 这里的mask是用来标识哪些是padding哪些是实际输入
                 mask = []
                 token_ids = config.tokenizer.convert_tokens_to_ids(token)
 
@@ -33,6 +34,7 @@ def build_dataset(config):
                         seq_len = pad_size
                 contents.append((token_ids, int(label), seq_len, mask))
         return contents
+    # TODO: 输出文件看一眼，对比下vocab
     train = load_dataset(config.train_path, config.pad_size)
     dev = load_dataset(config.dev_path, config.pad_size)
     test = load_dataset(config.test_path, config.pad_size)
