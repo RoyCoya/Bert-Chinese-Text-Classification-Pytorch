@@ -34,7 +34,7 @@ def build_dataset(config):
                         seq_len = pad_size
                 contents.append((token_ids, int(label), seq_len, mask))
         return contents
-    # TODO: 输出文件看一眼，对比下vocab
+    # 每个token序列即每条训练数据集中字符串在vocab中的id映射（包括一些其他自己加的标签）
     train = load_dataset(config.train_path, config.pad_size)
     dev = load_dataset(config.dev_path, config.pad_size)
     test = load_dataset(config.test_path, config.pad_size)
